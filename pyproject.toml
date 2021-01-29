@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "classeviva-client"
+version = "0.1.0"
+description = "Classeviva API client"
+authors = ["Maurizio Branca <maurizio.branca@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^2.7"
+requests = "^2.25.1"
+pytz = "^2020.5"
+python-dateutil = "^2.8.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
