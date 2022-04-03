@@ -1,5 +1,7 @@
 from collections import namedtuple
+import json
 import re
+from typing import Dict
 import requests
 from classeviva.model import Grade
 
@@ -15,6 +17,7 @@ Identity = namedtuple('Identity', [
     'lastName',
     'release',
     'expire',
+    'showPwdChangeReminder',
 ])
 
 
@@ -24,7 +27,6 @@ class Client(object):
         self.creds = credentials
 
     def __enter__(self):
-
         self.session = requests.Session()
         self.session.headers["User-Agent"] = "zorro/1.0"
         self.session.headers["Z-Dev-Apikey"] = "+zorro+"
@@ -71,5 +73,6 @@ class Client(object):
             subject=g['subjectDesc'],
             # kind=g['componentDesc'],
             date=g['evtDate'],
+            color=g['color'],
             comment=g['notesForFamily'],
         ) for g in grades['grades']]

@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+from itertools import groupby
+import click
+
+from classeviva.client import Client, Credentials
+
+@click.group()
+def cli():
+    pass
+
+@cli.command("list-grades")
+def list_grades():
+    with Client(Credentials("gatto@baratto.com", "secret")) as client:
+        grades = client.grades()
+
+        def by_date(grade):
+            return grade.date
+
+        # I want the grade list sorted by date, descending
+        sorted_grades = sorted(grades, key=by_date, reverse=True)
+
+        # I little space make me feel better
+        click.echo("")
+
+        # echo the list, grouped by grade date
+        for date, grades in groupby(sorted_grades, key=by_date):
+            click.echo(date)
+            for grade in grades:
+                _grade = f"- {grade.subject}, {grade.display_value}"
+                if grade.color != "green":
+                    _grade += f" ({grade.color})"
+                click.echo(_grade)
+
+
+
+if __name__ == '__main__':
+    cli()
