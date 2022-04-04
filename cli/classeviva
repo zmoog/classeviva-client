@@ -3,15 +3,16 @@
 from itertools import groupby
 import click
 
-from classeviva.client import Client, Credentials
+from classeviva.client import Client
+from classeviva.credentials import EnvCredentialsProvider
 
 @click.group()
 def cli():
-    pass
+    click.echo("doing things at the root command level")
 
 @cli.command("list-grades")
 def list_grades():
-    with Client(Credentials("gatto@baratto.com", "secret")) as client:
+    with Client(EnvCredentialsProvider()) as client:
         grades = client.grades()
 
         def by_date(grade):
