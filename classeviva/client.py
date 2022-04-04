@@ -1,25 +1,28 @@
-from collections import namedtuple
 import re
+from collections import namedtuple
+
 import requests
+
 from classeviva.model import Grade
 
+BASE_URL = "https://web.spaggiari.eu/rest/v1"
 
-BASE_URL = 'https://web.spaggiari.eu/rest/v1'
-
-Identity = namedtuple('Identity', [
-    'user_id',
-    'ident',
-    'token',
-    'firstName',
-    'lastName',
-    'release',
-    'expire',
-    'showPwdChangeReminder',
-])
+Identity = namedtuple(
+    "Identity",
+    [
+        "user_id",
+        "ident",
+        "token",
+        "firstName",
+        "lastName",
+        "release",
+        "expire",
+        "showPwdChangeReminder",
+    ],
+)
 
 
 class Client(object):
-
     def __init__(self, creds_provider):
         self.creds_provider = creds_provider
 
@@ -31,20 +34,17 @@ class Client(object):
         self.session.headers["Z-Dev-Apikey"] = "+zorro+"
         self.session.headers["Content-Type"] = "application/json"
 
-        data = {
-            "uid": creds.username,
-            "pass": creds.password
-        }
+        data = {"uid": creds.username, "pass": creds.password}
         resp = self.session.post(BASE_URL + "/auth/login/", json=data)
         if resp.status_code != 200:
-            raise Exception('login failed: ' + resp.text)
-        
+            raise Exception("login failed: " + resp.text)
+
         # from JSON to a dictionary
         _identity = resp.json()
 
         # The user ID is made of the `ident` without the leading
         # and trailing characters.
-        _identity['user_id'] = re.sub(r"\D", "", _identity['ident'])
+        _identity["user_id"] = re.sub(r"\D", "", _identity["ident"])
 
         self.identity = Identity(**_identity)
         # self.identity.id = re.sub(r"\D", "", self.identity.ident)
@@ -53,25 +53,30 @@ class Client(object):
         # will be used in all HTTP requests sent
         # from this client
         self.session.headers["Z-Auth-Token"] = self.identity.token
-        
+
         return self
 
     def __exit__(self, *args):
         pass
 
     def grades(self):
-        resp = self.session.get(url=f"{BASE_URL}/students/{self.identity.user_id}/grades")
+        resp = self.session.get(
+            url=f"{BASE_URL}/students/{self.identity.user_id}/grades"
+        )
         if resp.status_code != 200:
             raise Exception(resp.text)
 
         grades = resp.json()
 
-        return [Grade(
-            value=g['decimalValue'],
-            display_value=g['displayValue'],
-            subject=g['subjectDesc'],
-            # kind=g['componentDesc'],
-            date=g['evtDate'],
-            color=g['color'],
-            comment=g['notesForFamily'],
-        ) for g in grades['grades']]
+        return [
+            Grade(
+                value=g["decimalValue"],
+                display_value=g["displayValue"],
+                subject=g["subjectDesc"],
+                # kind=g['componentDesc'],
+                date=g["evtDate"],
+                color=g["color"],
+                comment=g["notesForFamily"],
+            )
+            for g in grades["grades"]
+        ]

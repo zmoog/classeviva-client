@@ -1,8 +1,8 @@
-from click.testing import CliRunner
-from unittest import expectedFailure, runner
 from unittest.mock import patch
 
-from tests.cli import import_module, FilesystemResponseBuilder
+from click.testing import CliRunner
+
+from tests.cli import FilesystemResponseBuilder, import_module
 
 cv = import_module("cv", "cli/classeviva")
 
@@ -16,7 +16,6 @@ cv = import_module("cv", "cli/classeviva")
     side_effect=FilesystemResponseBuilder("cli/testdata/grades.partial.json"),
 )
 def test_list_grades(identity_response_mock, grades_response_mock):
-
     runner = CliRunner()
     result = runner.invoke(cv.cli, ["list-grades"])
 
