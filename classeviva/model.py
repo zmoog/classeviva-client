@@ -8,5 +8,6 @@ Grade = namedtuple(
         'display_value',
         'subject',
         'date',
+        'color',
         'comment'
     ])

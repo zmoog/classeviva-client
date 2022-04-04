@@ -6,7 +6,6 @@ from classeviva.model import Grade
 
 BASE_URL = 'https://web.spaggiari.eu/rest/v1'
 
-Credentials = namedtuple('Credentials', ['username', 'password'])
 Identity = namedtuple('Identity', [
     'user_id',
     'ident',
@@ -15,15 +14,17 @@ Identity = namedtuple('Identity', [
     'lastName',
     'release',
     'expire',
+    'showPwdChangeReminder',
 ])
 
 
 class Client(object):
 
-    def __init__(self, credentials):
-        self.creds = credentials
+    def __init__(self, creds_provider):
+        self.creds_provider = creds_provider
 
     def __enter__(self):
+        creds = self.creds_provider()
 
         self.session = requests.Session()
         self.session.headers["User-Agent"] = "zorro/1.0"
@@ -31,8 +32,8 @@ class Client(object):
         self.session.headers["Content-Type"] = "application/json"
 
         data = {
-            "uid": self.creds.username,
-            "pass": self.creds.password
+            "uid": creds.username,
+            "pass": creds.password
         }
         resp = self.session.post(BASE_URL + "/auth/login/", json=data)
         if resp.status_code != 200:
@@ -59,7 +60,7 @@ class Client(object):
         pass
 
     def grades(self):
-        resp = self.session.get(url=BASE_URL + "/students/" + self.identity.user_id + "/grades")
+        resp = self.session.get(url=f"{BASE_URL}/students/{self.identity.user_id}/grades")
         if resp.status_code != 200:
             raise Exception(resp.text)
 
@@ -71,5 +72,6 @@ class Client(object):
             subject=g['subjectDesc'],
             # kind=g['componentDesc'],
             date=g['evtDate'],
+            color=g['color'],
             comment=g['notesForFamily'],
         ) for g in grades['grades']]

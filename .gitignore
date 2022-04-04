@@ -1,0 +1,13 @@
+@@ -0,0 +1,9 @@
+# IDEs
+.vscode
+
+# macOS
+.DS_Store
+
+# python
+venv
+__pycache__
+
+# local only
+setenv-*.sh
