@@ -87,8 +87,6 @@ class Client(object):
         since: datetime.date = date.today(),
         until: datetime.date = date.today() + timedelta(days=5),
     ):
-        print(since, until)
-
         _user_id = self.identity.user_id
         _since = since.strftime("%Y%m%d")
         _until = until.strftime("%Y%m%d")

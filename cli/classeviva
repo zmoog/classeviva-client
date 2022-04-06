@@ -51,7 +51,6 @@ def list_grades():
     default=str(date.today() + timedelta(days=5)),
 )
 def list_agenda(since: str, until: str):
-    # print(since, until)
     with Client(EnvCredentialsProvider()) as client:
         entries = client.list_agenda(since=since.date(), until=until.date())
 
