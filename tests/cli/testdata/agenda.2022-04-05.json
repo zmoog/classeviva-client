@@ -1,0 +1,30 @@
+{
+    "agenda": [
+        {
+            "evtId": 487447,
+            "evtCode": "AGNT",
+            "evtDatetimeBegin": "2022-04-05T08:00:00+02:00",
+            "evtDatetimeEnd": "2022-04-05T09:30:00+02:00",
+            "isFullDay": false,
+            "notes": "VERIFICA DI GRAMMATICA",
+            "authorName": "DICEMBRE ELISA",
+            "classDesc": "2E MUSICALE",
+            "subjectId": null,
+            "subjectDesc": null,
+            "homeworkId": null
+        },
+        {
+            "evtId": 497686,
+            "evtCode": "AGNT",
+            "evtDatetimeBegin": "2022-04-05T11:00:00+02:00",
+            "evtDatetimeEnd": "2022-04-05T12:00:00+02:00",
+            "isFullDay": false,
+            "notes": "Studiare Intermezzo da Cavalleria rusticana.",
+            "authorName": "GRIMALDI ALESSANDRO",
+            "classDesc": "2E MUSICALE",
+            "subjectId": null,
+            "subjectDesc": null,
+            "homeworkId": null
+        }
+    ]
+}

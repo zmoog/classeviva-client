@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from datetime import date, timedelta
 from itertools import groupby
 
 import click
@@ -25,7 +26,7 @@ def list_grades():
         # I want the grade list sorted by date, descending
         sorted_grades = sorted(grades, key=by_date, reverse=True)
 
-        # I little space make me feel better
+        # A little space makes me feel better
         click.echo("")
 
         # echo the list, grouped by grade date
@@ -38,5 +39,34 @@ def list_grades():
                 click.echo(_grade)
 
 
+@cli.command("list-agenda")
+@click.option(
+    "--since",
+    type=click.DateTime(formats=["%Y-%m-%d"]),
+    default=str(date.today()),
+)
+@click.option(
+    "--until",
+    type=click.DateTime(formats=["%Y-%m-%d"]),
+    default=str(date.today() + timedelta(days=5)),
+)
+def list_agenda(since: str, until: str):
+    # print(since, until)
+    with Client(EnvCredentialsProvider()) as client:
+        entries = client.list_agenda(since=since.date(), until=until.date())
+
+        def by_start_date(entry):
+            return entry.starts_at[:10]
+
+        # I want the grade list sorted by date, ascending
+        sorted_entries = sorted(entries, key=by_start_date, reverse=False)
+
+        # A little space makes me feel better
+        click.echo("")
+
+        for date, entries in groupby(sorted_entries, key=by_start_date):
+            click.echo(date)
+            for entry in entries:
+                click.echo(f"- {entry.author}, {entry.notes}")
 if __name__ == "__main__":
     cli()

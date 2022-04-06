@@ -1,9 +1,10 @@
 import re
 from collections import namedtuple
+from datetime import date, datetime, timedelta
 
 import requests
 
-from classeviva.model import Grade
+from classeviva.model import Entry, Grade
 
 BASE_URL = "https://web.spaggiari.eu/rest/v1"
 
@@ -79,4 +80,36 @@ class Client(object):
                 comment=g["notesForFamily"],
             )
             for g in grades["grades"]
+        ]
+
+    def list_agenda(
+        self,
+        since: datetime.date = date.today(),
+        until: datetime.date = date.today() + timedelta(days=5),
+    ):
+        print(since, until)
+
+        _user_id = self.identity.user_id
+        _since = since.strftime("%Y%m%d")
+        _until = until.strftime("%Y%m%d")
+
+        resp = self.session.get(
+            f"{BASE_URL}/students/{_user_id}/agenda/all/{_since}/{_until}"
+        )
+        if resp.status_code != 200:
+            raise Exception(resp.text)
+
+        agenda = resp.json()
+
+        return [
+            Entry(
+                id=g["evtId"],
+                code=g["evtCode"],
+                author=g["authorName"],
+                notes=g["notes"],
+                starts_at=g["evtDatetimeBegin"],
+                ends_at=g["evtDatetimeEnd"],
+                subject=g["subjectDesc"],
+            )
+            for g in agenda.get("agenda", [])
         ]
