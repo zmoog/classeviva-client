@@ -7,6 +7,7 @@ from tests.cli import FilesystemResponseBuilder, import_module
 
 cv = import_module("cv", "cli/classeviva")
 
+
 @patch(
     "requests.Session.post",
     side_effect=FilesystemResponseBuilder("cli/testdata/identity.json"),
