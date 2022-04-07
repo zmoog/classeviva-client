@@ -2,18 +2,18 @@ from unittest.mock import patch
 
 from click.testing import CliRunner
 
-from tests.cli import FilesystemResponseBuilder, import_module
+from tests.cli import MockResponseBuilder, import_module
 
 cv = import_module("cv", "cli/classeviva")
 
 
 @patch(
     "requests.Session.post",
-    side_effect=FilesystemResponseBuilder("cli/testdata/identity.json"),
+    side_effect=MockResponseBuilder("cli/testdata/identity.json"),
 )
 @patch(
     "requests.Session.get",
-    side_effect=FilesystemResponseBuilder("cli/testdata/grades.partial.json"),
+    side_effect=MockResponseBuilder("cli/testdata/grades.partial.json"),
 )
 def test_list_grades(identity_response_mock, grades_response_mock):
     runner = CliRunner()

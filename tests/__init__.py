@@ -1,1 +1,1 @@
-# required to make the FilesystemResponseBuilder resource loading work.
+# required to make the MockResponseBuilder resource loading work.
