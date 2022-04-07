@@ -32,7 +32,7 @@ def import_module(name: str, source_path: str) -> ModuleType:
     return mod
 
 
-class FilesystemResponseBuilder(object):
+class MockResponseBuilder(object):
     """
     Build a function that mocks a response from the `requests` library.
 
