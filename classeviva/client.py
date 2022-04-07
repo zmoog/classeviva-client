@@ -111,3 +111,21 @@ class Client(object):
             )
             for g in agenda.get("agenda", [])
         ]
+
+    def list_calendar(self):
+        resp = self.session.get(
+            f"{BASE_URL}/students/{self.identity.user_id}/calendar/all"
+        )
+        if resp.status_code != 200:
+            raise Exception(resp.text)
+
+        return []
+
+    def list_cards(self):
+        resp = self.session.get(
+            f"{BASE_URL}/students/{self.identity.user_id}/cards"
+        )
+        if resp.status_code != 200:
+            raise Exception(resp.text)
+
+        return []

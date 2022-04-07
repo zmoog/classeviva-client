@@ -67,5 +67,25 @@ def list_agenda(since: str, until: str):
             click.echo(day)
             for entry in entries:
                 click.echo(f"- {entry.author}, {entry.notes}")
+
+
+@cli.command("list-calendar")
+def list_calendar():
+    with Client(EnvCredentialsProvider()) as client:
+        calendar = client.list_calendar()
+
+        for entry in calendar:
+            click.echo(entry)
+
+
+@cli.command("list-cards")
+def list_cards():
+    with Client(EnvCredentialsProvider()) as client:
+        cards = client.list_cards()
+
+        for entry in cards:
+            click.echo(entry)
+
+
 if __name__ == "__main__":
     cli()
