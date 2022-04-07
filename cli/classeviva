@@ -30,8 +30,8 @@ def list_grades():
         click.echo("")
 
         # echo the list, grouped by grade date
-        for date, grades in groupby(sorted_grades, key=by_date):
-            click.echo(date)
+        for day, grades in groupby(sorted_grades, key=by_date):
+            click.echo(day)
             for grade in grades:
                 _grade = f"- {grade.subject}, {grade.display_value}"
                 if grade.color != "green":
@@ -63,8 +63,8 @@ def list_agenda(since: str, until: str):
         # A little space makes me feel better
         click.echo("")
 
-        for date, entries in groupby(sorted_entries, key=by_start_date):
-            click.echo(date)
+        for day, entries in groupby(sorted_entries, key=by_start_date):
+            click.echo(day)
             for entry in entries:
                 click.echo(f"- {entry.author}, {entry.notes}")
 if __name__ == "__main__":
