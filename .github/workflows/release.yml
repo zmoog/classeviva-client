@@ -1,10 +1,8 @@
 name: Release the package to PyPI
 
 on:
-  tag:
-    branches:
-      # - $default-branch
-      - zmoog/pypi
+  release:
+    types: [published]
 
 jobs:
   publish:
