@@ -31,7 +31,7 @@ $ python
 List your grades:
 
 ```shell
-$ ./cli/classeviva list-grades
+$ classeviva list-grades
 
 2022-03-30
 - MUSICA, 7
@@ -45,7 +45,7 @@ $ ./cli/classeviva list-grades
 List your agenda entries for homework assignments:
 
 ```shell
-$ ./cli/classeviva list-agenda
+$ classeviva list-agenda
 
 2022-04-07
 - TEACHER A, Geometria: pagina 42 n.90-91-96-100.
