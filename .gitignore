@@ -11,3 +11,7 @@ __pycache__
 
 # local only
 setenv-*.sh
+
+# dist
+dist
+*.egg-info
