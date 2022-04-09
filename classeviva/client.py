@@ -1,3 +1,4 @@
+import json
 import re
 from collections import namedtuple
 from datetime import date, datetime, timedelta
@@ -112,6 +113,28 @@ class Client(object):
             for g in agenda.get("agenda", [])
         ]
 
+    def list_notes(self):
+        resp = self.session.get(
+            f"{BASE_URL}/students/{self.identity.user_id}/notes/all"
+        )
+        if resp.status_code != 200:
+            raise Exception(resp.text)
+
+        print(json.dumps(resp.json(), indent=2))
+
+        return []
+
+    def list_noticeboard(self):
+        resp = self.session.get(
+            f"{BASE_URL}/students/{self.identity.user_id}/noticeboard"
+        )
+        if resp.status_code != 200:
+            raise Exception(resp.text)
+
+        print(json.dumps(resp.json(), indent=2))
+
+        return []
+
     def list_calendar(self):
         resp = self.session.get(
             f"{BASE_URL}/students/{self.identity.user_id}/calendar/all"
@@ -119,13 +142,17 @@ class Client(object):
         if resp.status_code != 200:
             raise Exception(resp.text)
 
+        print(json.dumps(resp.json(), indent=2))
+
         return []
 
     def list_cards(self):
         resp = self.session.get(
-            f"{BASE_URL}/students/{self.identity.user_id}/cards"
+            f"{BASE_URL}/students/{self.identity.user_id}/card"
         )
         if resp.status_code != 200:
             raise Exception(resp.text)
+
+        print(json.dumps(resp.json(), indent=2))
 
         return []

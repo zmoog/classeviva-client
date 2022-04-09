@@ -16,7 +16,6 @@ cv = import_module("cv", "cli/classeviva")
     side_effect=MockResponseBuilder("cli/testdata/agenda.2022-04-05.json"),
 )
 def test_list_grades(identity_response_mock, agenda_response_mock):
-
     runner = CliRunner()
     result = runner.invoke(
         cv.cli,
