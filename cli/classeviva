@@ -5,6 +5,7 @@ from itertools import groupby
 
 import click
 
+from classeviva.cli import exceptions
 from classeviva.client import Client
 from classeviva.credentials import EnvCredentialsProvider
 
@@ -16,6 +17,7 @@ def cli():
 
 
 @cli.command("list-grades")
+@exceptions
 def list_grades():
     with Client(EnvCredentialsProvider()) as client:
         grades = client.grades()
@@ -50,6 +52,7 @@ def list_grades():
     type=click.DateTime(formats=["%Y-%m-%d"]),
     default=str(date.today() + timedelta(days=5)),
 )
+@exceptions
 def list_agenda(since: str, until: str):
     with Client(EnvCredentialsProvider()) as client:
         entries = client.list_agenda(since=since.date(), until=until.date())
@@ -69,7 +72,28 @@ def list_agenda(since: str, until: str):
                 click.echo(f"- {entry.author}, {entry.notes}")
 
 
+@cli.command("list-noticeboard")
+@exceptions
+def list_noticeboard():
+    with Client(EnvCredentialsProvider()) as client:
+        noticeboard = client.list_noticeboard()
+
+        for entry in noticeboard:
+            click.echo(entry)
+
+
+@cli.command("list-notes")
+@exceptions
+def list_notes():
+    with Client(EnvCredentialsProvider()) as client:
+        notes = client.list_notes()
+
+        for entry in notes:
+            click.echo(entry)
+
+
 @cli.command("list-calendar")
+@exceptions
 def list_calendar():
     with Client(EnvCredentialsProvider()) as client:
         calendar = client.list_calendar()
@@ -79,6 +103,7 @@ def list_calendar():
 
 
 @cli.command("list-cards")
+@exceptions
 def list_cards():
     with Client(EnvCredentialsProvider()) as client:
         cards = client.list_cards()
