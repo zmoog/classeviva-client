@@ -5,7 +5,7 @@ with open("README.md") as f:
     long_description = f.read()
 
 NAME = "classeviva-client"
-VERSION = "0.0.6"
+VERSION = "0.0.7"
 REQUIRES = ["pydantic >= 1.9.0", "requests >= 2.25.1", "click >= 7.1.2"]
 
 setup(
