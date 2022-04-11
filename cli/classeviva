@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from datetime import date, timedelta
-from itertools import groupby
+from itertools import groupby, islice
 
 import click
 
@@ -73,13 +73,30 @@ def list_agenda(since: str, until: str):
 
 
 @cli.command("list-noticeboard")
+@click.option("--limit", type=click.INT, default=3)
 @exceptions
-def list_noticeboard():
+def list_noticeboard(limit: int):
     with Client(EnvCredentialsProvider()) as client:
-        noticeboard = client.list_noticeboard()
+        entries = client.list_noticeboard()
 
-        for entry in noticeboard:
-            click.echo(entry)
+        def by_start_date(entry):
+            return entry.published_at.date()
+
+        # I want the notice list sorted by date, from the most
+        # recent to the oldest.
+        sorted_entries = sorted(entries, key=by_start_date, reverse=True)
+
+        # noticeboard can contain A LOT of notices, so we just
+        # want to pick the most recent `limit` number of days
+        # worth of noteices.
+        for day, entries in islice(
+            groupby(sorted_entries, key=by_start_date), limit
+        ):
+            click.echo(day)
+            for entry in entries:
+                click.echo(f"- {entry.title}, {len(entry.attachments)}")
+                for attachment in entry.attachments:
+                    click.echo(f"  - {attachment}")
 
 
 @cli.command("list-notes")

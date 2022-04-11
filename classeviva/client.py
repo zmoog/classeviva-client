@@ -2,10 +2,11 @@ import json
 import re
 from collections import namedtuple
 from datetime import date, datetime, timedelta
+from typing import List
 
 import requests
 
-from classeviva.model import Entry, Grade
+from classeviva.model import Entry, Grade, Notice
 
 BASE_URL = "https://web.spaggiari.eu/rest/v1"
 
@@ -124,16 +125,28 @@ class Client(object):
 
         return []
 
-    def list_noticeboard(self):
+    def list_noticeboard(self) -> List[Notice]:
         resp = self.session.get(
             f"{BASE_URL}/students/{self.identity.user_id}/noticeboard"
         )
         if resp.status_code != 200:
             raise Exception(resp.text)
 
-        print(json.dumps(resp.json(), indent=2))
+        notices = resp.json()
+        # print(json.dumps(resp.json(), indent=2))
 
-        return []
+        # return []
+        return [
+            Notice(
+                id=n["pubId"],
+                published_at=n["pubDT"],
+                valid_from=n["cntValidFrom"],
+                valid_to=n["cntValidTo"],
+                title=n["cntTitle"],
+                attachments=[a["fileName"] for a in n.get("attachments", [])],
+            )
+            for n in notices.get("items", [])
+        ]
 
     def list_calendar(self):
         resp = self.session.get(
